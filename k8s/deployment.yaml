@@ -22,7 +22,7 @@ spec:
         runAsNonRoot: true
       containers:
         - name: gateway-microservice
-          image: us-central1-docker.pkg.dev/ikomida-prod/docker/gateway-microservice-image:latest
+          image: us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -34,15 +34,19 @@ spec:
             - containerPort: 1988
           resources:
             requests:
-              cpu: "40m"
-              memory: "50"
+              cpu: "18m"
+              memory: "60Mi"
             limits:
               cpu: "150m"
           env:
             - name: PORT
               value: "1988"
             - name: NODE_ENV
-              value: "production"
+              valueFrom:
+                secretKeyRef:
+                  name: environment
+                  key: NODE_ENV
+                  optional: false
             - name: IKOMIDA_PRIVATEKEY
               valueFrom:
                 secretKeyRef:
