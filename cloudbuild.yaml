@@ -5,7 +5,7 @@ steps:
     args:
       [
         "-c",
-        "docker pull us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest || exit 0",
+        "docker pull us-central1-docker.pkg.dev/$PROJECT_ID/docker/generics-microservice-image:latest || exit 0",
       ]
   - id: dockerBuild
     name: "gcr.io/cloud-builders/docker"
@@ -13,27 +13,40 @@ steps:
     args:
       [
         "-c",
-        'docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest . --build-arg GOOGLE_SERVICE_ACCOUNT="$(echo $$GOOGLE_SERVICE_ACCOUNT)" --build-arg PROJECT_ID=$(echo $PROJECT_ID) --cache-from us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest && docker push us-central1-docker.pkg.dev/$projectid/docker/gateway-microservice-image:latest',
+        'docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/docker/generics-microservice-image:latest . --build-arg GOOGLE_SERVICE_ACCOUNT="$(echo $$GOOGLE_SERVICE_ACCOUNT)" --build-arg PROJECT_ID=$(echo $PROJECT_ID) --cache-from us-central1-docker.pkg.dev/$PROJECT_ID/docker/generics-microservice-image:latest',
       ]
     secretEnv: ["GOOGLE_SERVICE_ACCOUNT"]
     waitFor:
       - dockerCache
+  - id: dockerPush
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/docker/generics-microservice-image:latest",
+      ]
+    waitFor:
+      - dockerBuild
   - id: k8s
     name: "us-central1-docker.pkg.dev/$PROJECT_ID/docker/k8s"
     entrypoint: "bash"
     args:
       [
         "-c",
-        "(/builder/kubectl.bash -n ikomida delete deploy gateway-microservice || true) && for FILE in k8s/*.yaml; do printf \"$(cat $$FILE)\n---\n\" | envsubst; done | /builder/kubectl.bash apply -f -",
+        "(/builder/kubectl.bash -n ikomida delete deploy generics-microservice || true) && for FILE in k8s/*.yaml; do printf \"$(cat $$FILE)\n---\n\" | envsubst; done | /builder/kubectl.bash apply -f -",
       ]
     env:
+      - "PROJECT_ID=$PROJECT_ID"
       - "CLOUDSDK_COMPUTE_ZONE=us-central1"
       - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-cluster"
-images:
-  [
-    "us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest",
-  ]
+    waitFor:
+      - dockerPush
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_NUMBER/secrets/google-service-account/versions/1
       env: "GOOGLE_SERVICE_ACCOUNT"
+
+images:
+  [
+    "us-central1-docker.pkg.dev/$PROJECT_ID/docker/generics-microservice-image:latest",
+  ]
