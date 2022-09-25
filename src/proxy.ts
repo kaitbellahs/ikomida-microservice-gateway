@@ -12,7 +12,7 @@ type ProxyTargetUrl = string | Partial<Url>;
 const logger = Utils.Logger.getInstance('gateway-microservice');
 
 function logError(err: Error, req: any, res: any) {
-  console.log('Utils.iKomidaError: ', err)
+  logger.error('Utils.iKomidaError: ', err)
   // logger.error(`Utils.iKomidaError:  ${JSON.stringify(err)}`);
   res.type('json');
   res.writeHead(500, {
@@ -36,22 +36,19 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
     for (const route of routes) {
       const apiProxy = (req: Request, res: Response) => {
         req.headers.Xip = req?.ip;
-        // if (req.method.toUpperCase() === route.method.toUpperCase()) {
-        console.log('route.proxy:', route)
         proxy.web(req, res, route.proxy, (
           err: Error,
           req: IncomingMessage,
           res: ServerResponse | Socket,
           target?: ProxyTargetUrl,
         ) => {
-          console.error('Proxy request: ', target, 'request:', req, 'response:', res, 'error:', err)
+          logger.error(`Proxy request: ${target}, request: ${req}, response: ${res} error:, ${err}`)
         });
-        // }
       };
       const middleware = [
         apiProxy,
         (req: Request, res: Response, next: NextFunction) => {
-          console.log('final step');
+          logger.log('final step');
           return next();
         },
       ];
@@ -78,13 +75,16 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
             }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${req?.url
             }, recaptcha-error: ${JSON.stringify(recaptcha)}`;
           logger.error(logInfo);
+
+          //TODO: disable next line after training recaptcha v3
+          return next();
           return res.sendStatus(423);
         });
       }
       (app as any)?.[route.method.toLowerCase()]?.(route.url, middleware);
     }
   } catch (exception: any) {
-    console.error('setupProxies exception:', exception);
+    logger.error('setupProxies exception:', exception);
   }
 };
 
