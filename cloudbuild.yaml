@@ -28,7 +28,7 @@ steps:
       ]
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
-      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-dev-cluster"
+      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-cluster"
 images:
   [
     "us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest",
