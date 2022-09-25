@@ -13,7 +13,7 @@ steps:
     args:
       [
         "-c",
-        'docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest . --build-arg GOOGLE_SERVICE_ACCOUNT="$(echo $$GOOGLE_SERVICE_ACCOUNT)" --build-arg PROJECT_ID=$(echo $PROJECT_ID) --cache-from us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest',
+        'docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest . --build-arg GOOGLE_SERVICE_ACCOUNT="$(echo $$GOOGLE_SERVICE_ACCOUNT)" --build-arg PROJECT_ID=$(echo $PROJECT_ID) --cache-from us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest && docker push us-central1-docker.pkg.dev/$projectid/docker/gateway-microservice-image:latest',
       ]
     secretEnv: ["GOOGLE_SERVICE_ACCOUNT"]
     waitFor:
