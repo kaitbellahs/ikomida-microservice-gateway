@@ -27,8 +27,8 @@ steps:
         "(/builder/kubectl.bash -n ikomida delete deploy gateway-microservice || true) && for FILE in k8s/*.yaml; do printf \"$(cat $$FILE)\n---\n\" | envsubst; done | /builder/kubectl.bash apply -f -",
       ]
     env:
-      - "CLOUDSDK_COMPUTE_ZONE=us-central1-b"
-      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-dev-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1"
+      - "CLOUDSDK_CONTAINER_CLUSTER=ikomida-cluster"
 images:
   [
     "us-central1-docker.pkg.dev/$PROJECT_ID/docker/gateway-microservice-image:latest",
