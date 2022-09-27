@@ -65,36 +65,6 @@ spec:
                   name: environment
                   key: googleAdmin
                   optional: false
-            - name: DBUSER
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: DBUSER
-            - name: DBPASS
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: DBPASS
-            - name: DBNAME
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: DBNAME
-            - name: DBHOST
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: DBHOST
-            - name: DBPORT
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: DBPORT
-            - name: PROJID
-              valueFrom:
-                secretKeyRef:
-                  name: environment
-                  key: PROJID
             - name: RECAPTCHA_SECRET
               valueFrom:
                 secretKeyRef:
