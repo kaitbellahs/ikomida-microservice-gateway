@@ -1,7 +1,7 @@
 import httpProxy from 'http-proxy';
-import { IncomingMessage, ServerResponse } from "http";
-import { Socket } from "net";
-import { Url } from "url";
+import { IncomingMessage, ServerResponse } from 'http';
+import { Socket } from 'net';
+import { Url } from 'url';
 import { Express, NextFunction, Request, Response } from 'express';
 import { importSPKI, compactVerify } from 'jose';
 import { Utils, BackendTypes, Types } from '@ikomida/shared-backend';
@@ -12,7 +12,7 @@ type ProxyTargetUrl = string | Partial<Url>;
 const logger = Utils.Logger.getInstance('gateway-microservice');
 
 function logError(err: Error, req: any, res: any) {
-  logger.error('Utils.iKomidaError: ', err)
+  logger.error('Utils.iKomidaError: ', err);
   // logger.error(`Utils.iKomidaError:  ${JSON.stringify(err)}`);
   res.type('json');
   res.writeHead(500, {
@@ -36,14 +36,14 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
     for (const route of routes) {
       const apiProxy = (req: Request, res: Response) => {
         req.headers.Xip = req?.ip;
-        proxy.web(req, res, route.proxy, (
-          err: Error,
-          req: IncomingMessage,
-          res: ServerResponse | Socket,
-          target?: ProxyTargetUrl,
-        ) => {
-          logger.error(`Proxy request: ${target}, request: ${req}, response: ${res} error:, ${err}`)
-        });
+        proxy.web(
+          req,
+          res,
+          route.proxy,
+          (err: Error, req: IncomingMessage, res: ServerResponse | Socket, target?: ProxyTargetUrl) => {
+            logger.error(`Proxy request: ${target}, request: ${req}, response: ${res} error:, ${err}`);
+          },
+        );
       };
       const middleware = [
         apiProxy,
@@ -71,9 +71,11 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           } catch (error: any) {
             recaptcha = error.message;
           }
-          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${route?.roles
-            }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${req?.url
-            }, recaptcha-error: ${JSON.stringify(recaptcha)}`;
+          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${
+            route?.roles
+          }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${
+            req?.url
+          }, recaptcha-error: ${JSON.stringify(recaptcha)}`;
           logger.error(logInfo);
 
           //TODO: disable next line after training recaptcha v3
@@ -91,9 +93,11 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
 function authenticateToken(route: IRoute, logger: Utils.Logger) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const agent = req.headers?.['x-ikomida-agent'];
-    let logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Platform: ${req.headers?.['x-ikomida-plateform']
-      }, DeviceId: ${req.headers?.['x-ikomida-did']}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${req?.ip
-      }, method: ${req.method.toUpperCase()}, url: ${req?.url}`;
+    let logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Platform: ${
+      req.headers?.['x-ikomida-plateform']
+    }, DeviceId: ${req.headers?.['x-ikomida-did']}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${
+      req?.ip
+    }, method: ${req.method.toUpperCase()}, url: ${req?.url}`;
     try {
       const algorithm = 'PS256';
       const authHeader = req?.headers?.authorization;
@@ -106,18 +110,20 @@ function authenticateToken(route: IRoute, logger: Utils.Logger) {
         req.headers.identity = identityString;
         const identity: Types.Classes.CUser = Types.Classes.CUser.fromObject(JSON.parse(identityString));
         const role = BackendTypes.Roles.valueOf(identity?.role);
-        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${identity.areaCode
-          } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${identity?.platform
-          }, User DeviceId: ${identity?.deviceId}`;
+        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${
+          identity.areaCode
+        } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${
+          identity?.platform
+        }, User DeviceId: ${identity?.deviceId}`;
         if (
           req.headers?.['x-ikomida-id'] === identity.ikomidaID &&
           (route?.roles === BackendTypes.Roles.ALL ||
             (Array.isArray(route?.roles) && role && route?.roles?.includes(role)) ||
             (!Array.isArray(route?.roles) && route?.roles === role)) &&
-          (role && BackendTypes.Roles.isInternal(role) || role == BackendTypes.Roles.CLIENT
+          ((role && BackendTypes.Roles.isInternal(role)) || role == BackendTypes.Roles.CLIENT
             ? true
             : req.headers?.['x-ikomida-did'] === identity.deviceId &&
-            req.headers?.['x-ikomida-plateform'] === identity.platform)
+              req.headers?.['x-ikomida-plateform'] === identity.platform)
         ) {
           logger.log(logInfo);
           return next();
