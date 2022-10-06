@@ -229,13 +229,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@ikomida/shared-backend@^0.2.18":
-  version "0.2.18"
-  resolved "https://us-central1-npm.pkg.dev/ikomida-dev/node/@ikomida/shared-backend/-/@ikomida/shared-backend-0.2.18.tgz#6979701dd1a7a48ad1c57949e30ab42d2b2c282c"
-  integrity sha512-JpLV7KvIZhj8wPljTnY1I0mUSmbHiCA25bPw0vg0Kv6O1eSlCkhDjRu+ZhXV5DDH5rWnMuqmZjif/iSGzDakpA==
+"@ikomida/shared-backend@^0.2.20":
+  version "0.2.20"
+  resolved "https://us-central1-npm.pkg.dev/ikomida-dev/node/@ikomida/shared-backend/-/@ikomida/shared-backend-0.2.20.tgz#864efbbd2d3d4667c1af1e3d0d93e6b98e171573"
+  integrity sha512-HIyV8NygYYzSD7YVW8IZ/uPFmyqw9JPof8jNxrQ1xFZQyBub7YNjVRafReo4w6aQf702zPC/N4gviASvQY8uuQ==
   dependencies:
     "@ikomida/shared-logics" "^0.2.0"
-    "@ikomida/shared-types" "^1.0.3"
+    "@ikomida/shared-types" "^1.0.7"
     amqplib "^0.10.3"
     axios "^1.0.0"
     bcrypt "^5.0.1"
@@ -261,10 +261,15 @@
     luxon "^3.0.4"
     uuid "^9.0.0"
 
-"@ikomida/shared-types@^1.0.2", "@ikomida/shared-types@^1.0.3":
+"@ikomida/shared-types@^1.0.2":
   version "1.0.3"
   resolved "https://us-central1-npm.pkg.dev/ikomida-dev/node/@ikomida/shared-types/-/@ikomida/shared-types-1.0.3.tgz#cbf184428f5ef159481af05f47cbaaae4e97366d"
   integrity sha512-H9C9zP4YZoSvYpq16T1ZRRX7jMWQmcoyJdLIxMWoIboYBBDXjPgnWVOsS3lU0I6+xlXiYoAEx42lmp39shSiVw==
+
+"@ikomida/shared-types@^1.0.7":
+  version "1.0.7"
+  resolved "https://us-central1-npm.pkg.dev/ikomida-dev/node/@ikomida/shared-types/-/@ikomida/shared-types-1.0.7.tgz#53bfc8cba161e6bcd18256977f49c107f5888126"
+  integrity sha512-4Mhwbek02WK9CW0SWpUkRSx0Sr1eGoq7woX4MQUc+iukuyiXsTHpNkCaso7ZJLBEQH9fBMyaumbpH2f3lUrAVA==
 
 "@jridgewell/gen-mapping@^0.3.0":
   version "0.3.2"
@@ -1048,7 +1053,7 @@ bluebird@^3.7.2:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-body-parser@1.20.0, body-parser@^1.20.0:
+body-parser@1.20.0:
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.20.0.tgz#3de69bd89011c11573d7bfee6a64f11b6bd27cc5"
   integrity sha512-DfJ+q6EPcGKZD1QWUjSpqp+Q7bDQTsQIF4zfUAtZ6qk+H/3/QRhg9CEp39ss+/T2vw0+HaidC0ecJj/DRLIaKg==
@@ -1062,6 +1067,24 @@ body-parser@1.20.0, body-parser@^1.20.0:
     iconv-lite "0.4.24"
     on-finished "2.4.1"
     qs "6.10.3"
+    raw-body "2.5.1"
+    type-is "~1.6.18"
+    unpipe "1.0.0"
+
+body-parser@^1.20.1:
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.20.1.tgz#b1812a8912c195cd371a3ee5e66faa2338a5c668"
+  integrity sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw==
+  dependencies:
+    bytes "3.1.2"
+    content-type "~1.0.4"
+    debug "2.6.9"
+    depd "2.0.0"
+    destroy "1.2.0"
+    http-errors "2.0.0"
+    iconv-lite "0.4.24"
+    on-finished "2.4.1"
+    qs "6.11.0"
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
@@ -3321,6 +3344,13 @@ qs@6.10.3:
   version "6.10.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
   integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
+  dependencies:
+    side-channel "^1.0.4"
+
+qs@6.11.0:
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.11.0.tgz#fd0d963446f7a65e1367e01abd85429453f0c37a"
+  integrity sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==
   dependencies:
     side-channel "^1.0.4"
 
