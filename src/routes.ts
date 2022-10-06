@@ -100,7 +100,7 @@ export default [
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
-    '/productoptioncategory/:id',
+    '/productoptionscategory/:id',
     Methods.DELETE,
     [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
     true,
