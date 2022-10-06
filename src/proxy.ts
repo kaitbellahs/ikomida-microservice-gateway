@@ -41,7 +41,11 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           res,
           route.proxy,
           (err: Error, req: IncomingMessage, res: ServerResponse | Socket, target?: ProxyTargetUrl) => {
-            logger.error(`Proxy request: ${target}, request: ${req}, response: ${res} error:, ${err}`)
+            logger.error(
+              `Proxy request: ${JSON.stringify(target)}, request: ${JSON.stringify(req)}, response: ${JSON.stringify(
+                res
+              )} error:, ${err}`
+            )
           }
         )
       }

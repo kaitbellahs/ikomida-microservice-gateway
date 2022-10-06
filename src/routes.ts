@@ -92,6 +92,20 @@ export default [
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
+  new IRoute(
+    '/productoption/:id',
+    Methods.DELETE,
+    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
+  new IRoute(
+    '/productoptioncategory/:id',
+    Methods.DELETE,
+    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
   new IRoute('/product', Methods.PUT, BackendTypes.Roles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
   new IRoute('/category', Methods.PUT, BackendTypes.Roles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
   new IRoute(
