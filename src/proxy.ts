@@ -41,9 +41,17 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           res,
           route.proxy,
           (err: Error, req: IncomingMessage, res: ServerResponse | Socket, target?: ProxyTargetUrl) => {
-            logger.error(
-              `Proxy request: ${target?.toString()}, request: ${JSON.stringify(req.method)}: ${JSON.stringify(req.url)}, error:`, err, res
-            )
+            try {
+              logger.error(
+                `Proxy request: ${target?.toString()}, request: ${JSON.stringify(req.method)}: ${JSON.stringify(
+                  req.url
+                )}, error:`,
+                err,
+                res
+              )
+            } catch (exception) {
+              logger.error(`Proxy request exception:`, exception)
+            }
           }
         )
       }
@@ -73,9 +81,11 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           } catch (error: any) {
             recaptcha = error.message
           }
-          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${route?.roles
-            }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${req?.url
-            }, recaptcha-error: ${JSON.stringify(recaptcha)}`
+          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${
+            route?.roles
+          }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${
+            req?.url
+          }, recaptcha-error: ${JSON.stringify(recaptcha)}`
           logger.error(logInfo)
 
           //TODO: disable next line after training recaptcha v3
@@ -83,7 +93,7 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           return res.sendStatus(423)
         })
       }
-      ; (app as any)?.[route.method.toLowerCase()]?.(route.url, middleware)
+      ;(app as any)?.[route.method.toLowerCase()]?.(route.url, middleware)
     }
   } catch (exception: any) {
     logger.error('setupProxies exception:', exception)
@@ -93,9 +103,11 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
 function authenticateToken(route: IRoute, logger: Utils.Logger) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const agent = req.headers?.['x-ikomida-agent']
-    let logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Platform: ${req.headers?.['x-ikomida-plateform']
-      }, DeviceId: ${req.headers?.['x-ikomida-did']}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${req?.ip
-      }, method: ${req.method.toUpperCase()}, url: ${req?.url}`
+    let logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Platform: ${
+      req.headers?.['x-ikomida-plateform']
+    }, DeviceId: ${req.headers?.['x-ikomida-did']}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${
+      req?.ip
+    }, method: ${req.method.toUpperCase()}, url: ${req?.url}`
     try {
       const algorithm = 'PS256'
       const authHeader = req?.headers?.authorization
@@ -108,9 +120,11 @@ function authenticateToken(route: IRoute, logger: Utils.Logger) {
         req.headers.identity = identityString
         const identity: Types.Classes.CUser = Types.Classes.CUser.fromObject(JSON.parse(identityString))
         const role = BackendTypes.Roles.valueOf(identity?.role)
-        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${identity.areaCode
-          } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${identity?.platform
-          }, User DeviceId: ${identity?.deviceId}`
+        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${
+          identity.areaCode
+        } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${
+          identity?.platform
+        }, User DeviceId: ${identity?.deviceId}`
         if (
           req.headers?.['x-ikomida-id'] === identity.ikomidaID &&
           (route?.roles === BackendTypes.Roles.ALL ||
@@ -119,7 +133,7 @@ function authenticateToken(route: IRoute, logger: Utils.Logger) {
           ((role && BackendTypes.Roles.isInternal(role)) || role == BackendTypes.Roles.CLIENT
             ? true
             : req.headers?.['x-ikomida-did'] === identity.deviceId &&
-            req.headers?.['x-ikomida-plateform'] === identity.platform)
+              req.headers?.['x-ikomida-plateform'] === identity.platform)
         ) {
           logger.log(logInfo)
           return next()
