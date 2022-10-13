@@ -228,6 +228,13 @@ export default [
     new IProxy(Domain.MicroService.orders, true)
   ),
   new IRoute(
+    '/order/:id',
+    Methods.GET,
+    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    true,
+    new IProxy(Domain.MicroService.orders, true)
+  ),
+  new IRoute(
     '/orders/:timestamp/history',
     Methods.GET,
     [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
