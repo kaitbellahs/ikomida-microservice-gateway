@@ -503,7 +503,14 @@ export default [
   new IRoute(
     '/vendor/pushNotifications/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    true,
+    new IProxy(Domain.MicroService.pushNotification, true)
+  ),
+  new IRoute(
+    '/pushNotifications/:timestamp',
+    Methods.GET,
+    BackendTypes.Roles.CLIENT,
     true,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
