@@ -221,6 +221,14 @@ export default [
     'requestPassword'
   ),
   new IRoute(
+    '/profile/avatar',
+    Methods.PATCH,
+    BackendTypes.Roles.ALL,
+    true,
+    new IProxy(Domain.MicroService.users, true)
+  ),
+  new IRoute('/profile', Methods.GET, BackendTypes.Roles.ALL, true, new IProxy(Domain.MicroService.users, true)),
+  new IRoute(
     '/orders/:timestamp',
     Methods.GET,
     [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
