@@ -1,18 +1,18 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: gateway-service
+  name: $NAME-service
   labels:
-    app: gateway-service
+    app: $NAME-service
   namespace: ikomida
   annotations:
-    cloud.google.com/backend-config: '{"ports": {"1988":"gateway-backendconfig"}}'
+    cloud.google.com/backend-config: '{"ports": {"1988":"$NAME-backendconfig"}}'
     cloud.google.com/neg: '{"ingress": true}'
 spec:
   type: NodePort
   selector:
-     app: gateway
+    app: $NAME
   ports:
-  - protocol: TCP
-    port: 1988
-    targetPort: 1988
+    - protocol: TCP
+      port: 1988
+      targetPort: 1988
