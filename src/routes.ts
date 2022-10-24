@@ -387,7 +387,7 @@ export default [
   new IRoute(
     '/reseller',
     Methods.POST,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
+    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true),
     'newReseller'
@@ -395,14 +395,14 @@ export default [
   new IRoute(
     '/resellers/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
+    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/restaurants/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
+    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
