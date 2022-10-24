@@ -21,7 +21,11 @@ try {
 
   app.set('trust proxy', true)
   app.use(compression())
-  app.use(morgan('combined'))
+  app.use(
+    morgan('combined', {
+      skip: (req, res) => !!req.headers['user-agent']?.startsWith('GoogleHC')
+    })
+  )
   app.disable('x-powered-by')
   app.use(cors())
   setupProxies(app, Routes)
