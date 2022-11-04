@@ -58,6 +58,13 @@ export default [
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
+    '/product/:id',
+    Methods.PATCH,
+    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
+  new IRoute(
     '/productsCount',
     Methods.GET,
     [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
@@ -353,6 +360,14 @@ export default [
     new IProxy(Domain.MicroService.generics, true)
   ),
   new IRoute(
+    '/requestContact',
+    Methods.POST,
+    BackendTypes.Roles.ALL,
+    false,
+    new IProxy(Domain.MicroService.generics, true),
+    'requestContact'
+  ),
+  new IRoute(
     '/term/:type',
     Methods.GET,
     [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
@@ -532,35 +547,70 @@ export default [
   new IRoute(
     '/admin/*',
     Methods.POST,
-    [BackendTypes.Roles.MARKETING, BackendTypes.Roles.MANAGER, BackendTypes.Roles.ADMIN, BackendTypes.Roles.ANALYTICAL, BackendTypes.Roles.APP, BackendTypes.Roles.FINANCE],
+    [
+      BackendTypes.Roles.MARKETING,
+      BackendTypes.Roles.MANAGER,
+      BackendTypes.Roles.ADMIN,
+      BackendTypes.Roles.ANALYTICAL,
+      BackendTypes.Roles.APP,
+      BackendTypes.Roles.FINANCE
+    ],
     true,
     new IProxy(Domain.MicroService.admin, true)
   ),
   new IRoute(
     '/admin/*',
     Methods.PATCH,
-    [BackendTypes.Roles.MARKETING, BackendTypes.Roles.MANAGER, BackendTypes.Roles.ADMIN, BackendTypes.Roles.ANALYTICAL, BackendTypes.Roles.APP, BackendTypes.Roles.FINANCE],
+    [
+      BackendTypes.Roles.MARKETING,
+      BackendTypes.Roles.MANAGER,
+      BackendTypes.Roles.ADMIN,
+      BackendTypes.Roles.ANALYTICAL,
+      BackendTypes.Roles.APP,
+      BackendTypes.Roles.FINANCE
+    ],
     true,
     new IProxy(Domain.MicroService.admin, true)
   ),
   new IRoute(
     '/admin/*',
     Methods.GET,
-    [BackendTypes.Roles.MARKETING, BackendTypes.Roles.MANAGER, BackendTypes.Roles.ADMIN, BackendTypes.Roles.ANALYTICAL, BackendTypes.Roles.APP, BackendTypes.Roles.FINANCE],
+    [
+      BackendTypes.Roles.MARKETING,
+      BackendTypes.Roles.MANAGER,
+      BackendTypes.Roles.ADMIN,
+      BackendTypes.Roles.ANALYTICAL,
+      BackendTypes.Roles.APP,
+      BackendTypes.Roles.FINANCE
+    ],
     true,
     new IProxy(Domain.MicroService.admin, true)
   ),
   new IRoute(
     '/admin/*',
     Methods.PUT,
-    [BackendTypes.Roles.MARKETING, BackendTypes.Roles.MANAGER, BackendTypes.Roles.ADMIN, BackendTypes.Roles.ANALYTICAL, BackendTypes.Roles.APP, BackendTypes.Roles.FINANCE],
+    [
+      BackendTypes.Roles.MARKETING,
+      BackendTypes.Roles.MANAGER,
+      BackendTypes.Roles.ADMIN,
+      BackendTypes.Roles.ANALYTICAL,
+      BackendTypes.Roles.APP,
+      BackendTypes.Roles.FINANCE
+    ],
     true,
     new IProxy(Domain.MicroService.admin, true)
   ),
   new IRoute(
     '/admin/*',
     Methods.DELETE,
-    [BackendTypes.Roles.MARKETING, BackendTypes.Roles.MANAGER, BackendTypes.Roles.ADMIN, BackendTypes.Roles.ANALYTICAL, BackendTypes.Roles.APP, BackendTypes.Roles.FINANCE],
+    [
+      BackendTypes.Roles.MARKETING,
+      BackendTypes.Roles.MANAGER,
+      BackendTypes.Roles.ADMIN,
+      BackendTypes.Roles.ANALYTICAL,
+      BackendTypes.Roles.APP,
+      BackendTypes.Roles.FINANCE
+    ],
     true,
     new IProxy(Domain.MicroService.admin, true)
   ),
