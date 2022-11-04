@@ -360,6 +360,14 @@ export default [
     new IProxy(Domain.MicroService.generics, true)
   ),
   new IRoute(
+    '/requestContact',
+    Methods.POST,
+    BackendTypes.Roles.ALL,
+    false,
+    new IProxy(Domain.MicroService.generics, true),
+    'requestContact'
+  ),
+  new IRoute(
     '/term/:type',
     Methods.GET,
     [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
