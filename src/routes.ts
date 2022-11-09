@@ -43,17 +43,18 @@ export class IRoute {
 
 export default [
   new IRoute('/pubKey', Methods.GET, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.payments, true)),
-  new IRoute(
-    '/products',
-    Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
-    true,
-    new IProxy(Domain.MicroService.products, true)
-  ),
+  new IRoute('/products', Methods.GET, BackendTypes.Roles.ALL, false, new IProxy(Domain.MicroService.products, true)),
   new IRoute(
     '/product/:id',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    BackendTypes.Roles.ALL,
+    false,
+    new IProxy(Domain.MicroService.products, true)
+  ),
+  new IRoute(
+    '/lowQuantityProducts',
+    Methods.GET,
+    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
