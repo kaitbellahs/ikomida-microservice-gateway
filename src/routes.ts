@@ -1,4 +1,4 @@
-import { BackendTypes, Domain } from '@ikomida/shared-backend'
+import { BackendTypes, Domain, Types } from '@ikomida/shared-backend'
 
 export enum Methods {
   GET = 'GET',
@@ -19,7 +19,7 @@ export class IProxy {
 export class IRoute {
   url: string
   method: Methods
-  roles: BackendTypes.Roles[] | BackendTypes.Roles | null
+  roles: Types.Types.TRoles[] | Types.Types.TRoles | null
   auth: boolean
   proxy: IProxy
   recaptcha?: string
@@ -27,7 +27,7 @@ export class IRoute {
   constructor(
     url: string,
     method: Methods,
-    roles: BackendTypes.Roles[] | BackendTypes.Roles | null,
+    roles: Types.Types.TRoles[] | Types.Types.TRoles | null,
     auth: boolean,
     proxy: IProxy,
     recaptcha?: string
@@ -42,99 +42,99 @@ export class IRoute {
 }
 
 export default [
-  new IRoute('/pubKey', Methods.GET, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.payments, true)),
-  new IRoute('/products', Methods.GET, BackendTypes.Roles.ALL, false, new IProxy(Domain.MicroService.products, true)),
+  new IRoute('/pubKey', Methods.GET, Types.Types.TRoles.CLIENT, true, new IProxy(Domain.MicroService.payments, true)),
+  new IRoute('/products', Methods.GET, Types.Types.TRoles.ALL, false, new IProxy(Domain.MicroService.products, true)),
   new IRoute(
     '/product/:id',
     Methods.GET,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     false,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/lowQuantityProducts',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/product/:id',
     Methods.PATCH,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/productsCount',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/categories',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/image/:imageUri',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     false,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/product/:id',
     Methods.DELETE,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/category/:id',
     Methods.DELETE,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/productoption/:id',
     Methods.DELETE,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/productoptionscategory/:id',
     Methods.DELETE,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
-  new IRoute('/product', Methods.PUT, BackendTypes.Roles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
-  new IRoute('/category', Methods.PUT, BackendTypes.Roles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
+  new IRoute('/product', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
+  new IRoute('/category', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
   new IRoute(
     '/product',
     Methods.POST,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
-  new IRoute('/category', Methods.PUT, BackendTypes.Roles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
+  new IRoute('/category', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
   new IRoute(
     '/category',
     Methods.POST,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/order',
     Methods.PUT,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.CLIENT],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.CLIENT],
     true,
     new IProxy(Domain.MicroService.orders, true),
     'editOrder'
@@ -142,7 +142,7 @@ export default [
   new IRoute(
     '/order',
     Methods.POST,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.orders, true),
     'newOrder'
@@ -150,29 +150,29 @@ export default [
   new IRoute(
     '/ordersCount',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.orders, true)
   ),
   new IRoute(
     '/usersCount',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.users, true)
   ),
-  new IRoute('/settings', Methods.GET, BackendTypes.Roles.CLIENT, false, new IProxy(Domain.MicroService.users, true)),
+  new IRoute('/settings', Methods.GET, Types.Types.TRoles.CLIENT, false, new IProxy(Domain.MicroService.users, true)),
   new IRoute(
     '/password',
     Methods.POST,
     [
-      BackendTypes.Roles.VENDOR,
-      BackendTypes.Roles.STAFF,
-      BackendTypes.Roles.CLIENT,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.RESELLER
+      Types.Types.TRoles.VENDOR,
+      Types.Types.TRoles.STAFF,
+      Types.Types.TRoles.CLIENT,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.RESELLER
     ],
     true,
     new IProxy(Domain.MicroService.users, true),
@@ -182,7 +182,7 @@ export default [
   new IRoute(
     '/logout',
     Methods.DELETE,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     true,
     new IProxy(Domain.MicroService.users, true),
     'logout'
@@ -231,51 +231,51 @@ export default [
   new IRoute(
     '/profile/avatar',
     Methods.PATCH,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     true,
     new IProxy(Domain.MicroService.users, true)
   ),
-  new IRoute('/profile', Methods.GET, BackendTypes.Roles.ALL, true, new IProxy(Domain.MicroService.users, true)),
+  new IRoute('/profile', Methods.GET, Types.Types.TRoles.ALL, true, new IProxy(Domain.MicroService.users, true)),
   new IRoute(
     '/orders/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.orders, true)
   ),
   new IRoute(
     '/order/:id',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.orders, true)
   ),
   new IRoute(
     '/orders/:timestamp/history',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.orders, true)
   ),
-  new IRoute('/payments', Methods.GET, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.payments, true)),
+  new IRoute('/payments', Methods.GET, Types.Types.TRoles.CLIENT, true, new IProxy(Domain.MicroService.payments, true)),
   new IRoute(
     '/payeridtypes',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.CLIENT],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.CLIENT],
     false,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/cardinfo/:cardNumber',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.CLIENT],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.CLIENT],
     false,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/payment',
     Methods.POST,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.payments, true),
     'newCreditCard'
@@ -291,59 +291,59 @@ export default [
   new IRoute(
     '/payment/:id',
     Methods.PUT,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/payment/:id',
     Methods.DELETE,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/processPayment',
     Methods.POST,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/coupon',
     Methods.POST,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/coupons/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/couponsCount',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/coupon/:id',
     Methods.DELETE,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
-  new IRoute('/addresses', Methods.GET, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
-  new IRoute('/address', Methods.POST, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
-  new IRoute('/address/:id', Methods.PUT, BackendTypes.Roles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
+  new IRoute('/addresses', Methods.GET, Types.Types.TRoles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
+  new IRoute('/address', Methods.POST, Types.Types.TRoles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
+  new IRoute('/address/:id', Methods.PUT, Types.Types.TRoles.CLIENT, true, new IProxy(Domain.MicroService.users, true)),
   new IRoute(
     '/address/:id',
     Methods.DELETE,
-    BackendTypes.Roles.CLIENT,
+    Types.Types.TRoles.CLIENT,
     true,
     new IProxy(Domain.MicroService.users, true)
   ),
@@ -351,11 +351,11 @@ export default [
     '/cep/:cep',
     Methods.GET,
     [
-      BackendTypes.Roles.CLIENT,
-      BackendTypes.Roles.VENDOR,
-      BackendTypes.Roles.RESELLER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.STAFF
+      Types.Types.TRoles.CLIENT,
+      Types.Types.TRoles.VENDOR,
+      Types.Types.TRoles.RESELLER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.STAFF
     ],
     false,
     new IProxy(Domain.MicroService.generics, true)
@@ -363,7 +363,7 @@ export default [
   new IRoute(
     '/requestContact',
     Methods.POST,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     false,
     new IProxy(Domain.MicroService.generics, true),
     'requestContact'
@@ -371,14 +371,14 @@ export default [
   new IRoute(
     '/term/:type',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.RESELLER, Types.Types.TRoles.ADMIN],
     false,
     new IProxy(Domain.MicroService.generics, true)
   ),
   new IRoute(
     '/termID/:type',
     Methods.GET,
-    [BackendTypes.Roles.CLIENT, BackendTypes.Roles.VENDOR, BackendTypes.Roles.RESELLER, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.RESELLER, Types.Types.TRoles.ADMIN],
     false,
     new IProxy(Domain.MicroService.generics, true)
   ),
@@ -403,7 +403,7 @@ export default [
   new IRoute(
     '/reseller',
     Methods.POST,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true),
     'newReseller'
@@ -411,35 +411,35 @@ export default [
   new IRoute(
     '/resellers/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/restaurants/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/vendor/subscription',
     Methods.GET,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.payments, true)
   ),
   new IRoute(
     '/vendor/businessHours',
     Methods.PUT,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/pagSeguroUrl',
     Methods.GET,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true),
     'pagSeguroUrl'
@@ -447,14 +447,14 @@ export default [
   new IRoute(
     '/vendor/delivery',
     Methods.PUT,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/updatePaymentGateway',
     Methods.PUT,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true),
     'updatePaymentGateway'
@@ -462,7 +462,7 @@ export default [
   new IRoute(
     '/vendor/revokePaymentGateway',
     Methods.DELETE,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true),
     'revokePaymentGateway'
@@ -470,35 +470,35 @@ export default [
   new IRoute(
     '/vendor/settings',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/limits',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/staff/:timestamp',
     Methods.GET,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/staff',
     Methods.POST,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/staff/:id',
     Methods.DELETE,
-    BackendTypes.Roles.VENDOR,
+    Types.Types.TRoles.VENDOR,
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
@@ -506,42 +506,42 @@ export default [
   new IRoute(
     '/layout',
     Methods.PUT,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/vendor/settings',
     Methods.PUT,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
     true,
     new IProxy(Domain.MicroService.vendorSettings, true)
   ),
   new IRoute(
     '/notification/register',
     Methods.POST,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     true,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
   new IRoute(
     '/vendor/pushNotifications/:timestamp',
     Methods.GET,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
   new IRoute(
     '/pushNotifications/:timestamp',
     Methods.GET,
-    BackendTypes.Roles.ALL,
+    Types.Types.TRoles.ALL,
     true,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
   new IRoute(
     '/vendor/pushNotification',
     Methods.POST,
-    [BackendTypes.Roles.VENDOR, BackendTypes.Roles.STAFF, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
@@ -549,12 +549,12 @@ export default [
     '/admin/*',
     Methods.POST,
     [
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.ANALYTICAL,
-      BackendTypes.Roles.APP,
-      BackendTypes.Roles.FINANCE
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.ANALYTICAL,
+      Types.Types.TRoles.APP,
+      Types.Types.TRoles.FINANCE
     ],
     true,
     new IProxy(Domain.MicroService.admin, true)
@@ -563,12 +563,12 @@ export default [
     '/admin/*',
     Methods.PATCH,
     [
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.ANALYTICAL,
-      BackendTypes.Roles.APP,
-      BackendTypes.Roles.FINANCE
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.ANALYTICAL,
+      Types.Types.TRoles.APP,
+      Types.Types.TRoles.FINANCE
     ],
     true,
     new IProxy(Domain.MicroService.admin, true)
@@ -577,12 +577,12 @@ export default [
     '/admin/*',
     Methods.GET,
     [
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.ANALYTICAL,
-      BackendTypes.Roles.APP,
-      BackendTypes.Roles.FINANCE
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.ANALYTICAL,
+      Types.Types.TRoles.APP,
+      Types.Types.TRoles.FINANCE
     ],
     true,
     new IProxy(Domain.MicroService.admin, true)
@@ -591,12 +591,12 @@ export default [
     '/admin/*',
     Methods.PUT,
     [
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.ANALYTICAL,
-      BackendTypes.Roles.APP,
-      BackendTypes.Roles.FINANCE
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.ANALYTICAL,
+      Types.Types.TRoles.APP,
+      Types.Types.TRoles.FINANCE
     ],
     true,
     new IProxy(Domain.MicroService.admin, true)
@@ -605,12 +605,12 @@ export default [
     '/admin/*',
     Methods.DELETE,
     [
-      BackendTypes.Roles.MARKETING,
-      BackendTypes.Roles.MANAGER,
-      BackendTypes.Roles.ADMIN,
-      BackendTypes.Roles.ANALYTICAL,
-      BackendTypes.Roles.APP,
-      BackendTypes.Roles.FINANCE
+      Types.Types.TRoles.MARKETING,
+      Types.Types.TRoles.MANAGER,
+      Types.Types.TRoles.ADMIN,
+      Types.Types.TRoles.ANALYTICAL,
+      Types.Types.TRoles.APP,
+      Types.Types.TRoles.FINANCE
     ],
     true,
     new IProxy(Domain.MicroService.admin, true)
@@ -618,35 +618,35 @@ export default [
   new IRoute(
     '/reseller/*',
     Methods.POST,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/reseller/*',
     Methods.PATCH,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/reseller/*',
     Methods.GET,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/reseller/*',
     Methods.PUT,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
     '/reseller/*',
     Methods.DELETE,
-    [BackendTypes.Roles.RESELLER, BackendTypes.Roles.VENDOR, BackendTypes.Roles.ADMIN],
+    [Types.Types.TRoles.RESELLER, Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.resellers, true)
   )
