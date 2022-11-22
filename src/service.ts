@@ -36,6 +36,11 @@ try {
     res.sendResponse('PONG')
   })
 
+  app.get('/robots.txt', async (_, res) => {
+    res.type('text/plain')
+    res.send('User-agent: *\nDisallow: /')
+  })
+
   app.get('/', async (req, res) => {
     res.status(200).send()
   })
