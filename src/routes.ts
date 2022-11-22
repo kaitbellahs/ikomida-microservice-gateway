@@ -400,6 +400,7 @@ export default [
   ),
   new IRoute('/contract', Methods.POST, null, false, new IProxy(Domain.MicroService.contracts, true), 'newContract'),
   new IRoute('/plans', Methods.GET, null, false, new IProxy(Domain.MicroService.contracts, true)),
+  new IRoute('/plan/:id', Methods.GET, null, false, new IProxy(Domain.MicroService.contracts, true)),
   new IRoute(
     '/reseller',
     Methods.POST,
