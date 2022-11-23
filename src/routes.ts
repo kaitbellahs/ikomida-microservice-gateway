@@ -424,6 +424,20 @@ export default [
     new IProxy(Domain.MicroService.resellers, true)
   ),
   new IRoute(
+    '/vendor/app',
+    Methods.GET,
+    Types.Types.TRoles.VENDOR,
+    true,
+    new IProxy(Domain.MicroService.vendorSettings, true)
+  ),
+  new IRoute(
+    '/vendor/app',
+    Methods.PATCH,
+    Types.Types.TRoles.VENDOR,
+    true,
+    new IProxy(Domain.MicroService.vendorSettings, true)
+  ),
+  new IRoute(
     '/vendor/subscription',
     Methods.GET,
     Types.Types.TRoles.VENDOR,
