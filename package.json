@@ -1,6 +1,6 @@
 {
   "name": "ikomida-gateway-service",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "ikomida gateway service",
   "private": true,
   "module": "build/service.js",
