@@ -535,8 +535,8 @@ export default [
   new IRoute(
     '/notification/register',
     Methods.POST,
-    Types.Types.TRoles.ALL,
-    true,
+    null,
+    false,
     new IProxy(Domain.MicroService.pushNotification, true)
   ),
   new IRoute(
