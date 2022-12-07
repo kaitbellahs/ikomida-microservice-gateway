@@ -180,6 +180,14 @@ export default [
   ),
   new IRoute('/auth', Methods.POST, null, false, new IProxy(Domain.MicroService.users, true), 'login'),
   new IRoute(
+    '/deleteAccount',
+    Methods.DELETE,
+    Types.Types.TRoles.ALL,
+    true,
+    new IProxy(Domain.MicroService.users, true),
+    'deleteAccount'
+  ),
+  new IRoute(
     '/logout',
     Methods.DELETE,
     Types.Types.TRoles.ALL,
