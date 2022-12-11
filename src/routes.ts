@@ -75,7 +75,7 @@ export default [
   new IRoute(
     '/categories',
     Methods.GET,
-    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
+    [Types.Types.TRoles.CLIENT, Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
@@ -89,45 +89,63 @@ export default [
   new IRoute(
     '/product/:id',
     Methods.DELETE,
-    Types.Types.TRoles.VENDOR,
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/category/:id',
     Methods.DELETE,
-    Types.Types.TRoles.VENDOR,
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/productoption/:id',
     Methods.DELETE,
-    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
   new IRoute(
     '/productoptionscategory/:id',
     Methods.DELETE,
-    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
-  new IRoute('/product', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
-  new IRoute('/category', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
+  new IRoute(
+    '/product',
+    Methods.PUT,
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
+  new IRoute(
+    '/category',
+    Methods.PUT,
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
   new IRoute(
     '/product',
     Methods.POST,
-    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
-  new IRoute('/category', Methods.PUT, Types.Types.TRoles.VENDOR, true, new IProxy(Domain.MicroService.products, true)),
+  new IRoute(
+    '/category',
+    Methods.PUT,
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.ADMIN],
+    true,
+    new IProxy(Domain.MicroService.products, true)
+  ),
   new IRoute(
     '/category',
     Methods.POST,
-    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF],
+    [Types.Types.TRoles.VENDOR, Types.Types.TRoles.STAFF, Types.Types.TRoles.ADMIN],
     true,
     new IProxy(Domain.MicroService.products, true)
   ),
@@ -165,15 +183,7 @@ export default [
   new IRoute(
     '/password',
     Methods.POST,
-    [
-      Types.Types.TRoles.VENDOR,
-      Types.Types.TRoles.STAFF,
-      Types.Types.TRoles.CLIENT,
-      Types.Types.TRoles.ADMIN,
-      Types.Types.TRoles.MANAGER,
-      Types.Types.TRoles.MARKETING,
-      Types.Types.TRoles.RESELLER
-    ],
+    Types.Types.TRoles.ALL,
     true,
     new IProxy(Domain.MicroService.users, true),
     'updatePassword'
