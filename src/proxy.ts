@@ -4,8 +4,9 @@ import { Socket } from 'net'
 import { Url } from 'url'
 import { Express, NextFunction, Request, Response } from 'express'
 import { importSPKI, compactVerify } from 'jose'
-import { Utils, BackendTypes, Types } from '@ikomida/shared-backend'
+import { Utils } from '@ikomida/shared-backend'
 import { IRoute } from './routes.js'
+import { Classes, Types } from '@ikomida/shared-types'
 
 type ProxyTargetUrl = string | Partial<Url>
 
@@ -20,7 +21,7 @@ function logError(err: Error, req: any, res: any) {
   })
   res.end(
     JSON.stringify(
-      new Utils.Return(
+      new Classes.Return(
         false,
         'Ocorreu um erro interno nos serviços, tente de novo mais tarde, e se o erro persiste entre em contato com nosso suporte'
       )
@@ -79,11 +80,9 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           } catch (error: any) {
             recaptcha = error.message
           }
-          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${
-            route?.roles
-          }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${
-            req?.url
-          }, recaptcha-error: ${JSON.stringify(recaptcha)}`
+          const logInfo = `App iKomidaId: ${req.headers?.['x-ikomida-id']}, Required-roles ${route?.roles
+            }, Agent: ${agent}, IP: ${req?.ip}, method: ${req.method.toUpperCase()}, url: ${req?.url
+            }, recaptcha-error: ${JSON.stringify(recaptcha)}`
           logger.error(logInfo)
 
           //TODO: disable next line after training recaptcha v3
@@ -91,7 +90,7 @@ export const setupProxies = async (app: Express, routes: IRoute[]) => {
           return res.sendStatus(423)
         })
       }
-      ;(app as any)?.[route.method.toLowerCase()]?.(route.url, middleware)
+      ; (app as any)?.[route.method.toLowerCase()]?.(route.url, middleware)
     }
   } catch (exception: any) {
     logger.error('setupProxies exception:', exception)
@@ -102,11 +101,9 @@ function authenticateToken(route: IRoute, logger: Utils.Logger) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const agent = req.headers?.['x-ikomida-agent']
     const iKomidaID = req.headers?.['x-ikomida-id']
-    let logInfo = `App iKomidaId: ${iKomidaID}, Platform: ${req.headers?.['x-ikomida-plateform']}, DeviceId: ${
-      req.headers?.['x-ikomida-did']
-    }, Required-auth ${route?.auth}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${
-      req?.ip
-    }, method: ${req.method.toUpperCase()}, url: ${req?.url}`
+    let logInfo = `App iKomidaId: ${iKomidaID}, Platform: ${req.headers?.['x-ikomida-plateform']}, DeviceId: ${req.headers?.['x-ikomida-did']
+      }, Required-auth ${route?.auth}, Required-roles ${route?.roles}, Agent: ${agent}, IP: ${req?.ip
+      }, method: ${req.method.toUpperCase()}, url: ${req?.url}`
     try {
       const algorithm = 'PS256'
       const authHeader = req?.headers?.authorization
@@ -116,28 +113,22 @@ function authenticateToken(route: IRoute, logger: Utils.Logger) {
         const ecPublicKey = await importSPKI(spki, algorithm)
         const { payload } = await compactVerify(token, ecPublicKey)
         const identityString = new TextDecoder().decode(payload)
-        const identity: Types.Classes.CUser = Types.Classes.CUser.fromObject(JSON.parse(identityString))
+        const identity: Classes.CUser = Classes.CUser.fromObject(JSON.parse(identityString))
         const role = identity?.role
-        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${
-          identity.areaCode
-        } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${
-          identity?.platform
-        }, User DeviceId: ${identity?.deviceId}`
+        logInfo += `, Login: ${identity !== null}, User: ${identity.name} ${identity.lastName}, Phone: ${identity.areaCode
+          } ${identity.phone}, Role: ${role?.id ?? 'Unkown'}, User iKomidaId: ${identity.ikomidaID}, User Platform: ${identity?.platform
+          }, User DeviceId: ${identity?.deviceId}`
         if (
-          // Utils.System.isDemo(identity.ikomidaID, identity.areaCode, identity.phone) ||
           !route.auth ||
           (iKomidaID === identity.ikomidaID &&
-            (route?.roles === Types.Types.TRoles.ALL ||
+            (route?.roles === Types.TRoles.ALL ||
               (Array.isArray(route?.roles) && role && route?.roles?.includes(role)) ||
               (!Array.isArray(route?.roles) && route?.roles === role)) &&
-            ((role && Types.Types.TRoles.isInternal(role)) || role == Types.Types.TRoles.CLIENT
+            ((role && Types.TRoles.isInternal(role)) || role == Types.TRoles.CLIENT
               ? true
               : req.headers?.['x-ikomida-did'] === identity.deviceId &&
-                req.headers?.['x-ikomida-plateform'] === identity.platform))
+              req.headers?.['x-ikomida-plateform'] === identity.platform))
         ) {
-          // if (identity.identity === '33000000097' && typeof iKomidaID === 'string') {
-          //   identity.ikomidaID = iKomidaID
-          // }
           req.headers.identity = JSON.stringify(identity.toJSON())
           logger.log(logInfo)
           return next()
