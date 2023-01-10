@@ -27,7 +27,7 @@ try {
     })
   )
   app.disable('x-powered-by')
-  app.use(cors())
+  app.use(cors({ allowedHeaders: '*' }))
   setupProxies(app, Routes)
   Utils.System.setExpressResponse(app)
   const port = process?.env?.PORT ?? 80
